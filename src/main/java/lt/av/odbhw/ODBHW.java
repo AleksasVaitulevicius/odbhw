@@ -17,9 +17,11 @@ public class ODBHW {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/odbhw.odb");
         EntityManager em = emf.createEntityManager();
 
+        Owners owners = new Owners(em);
+
         Map<String, Controller> controllers = Map.of(
-            "pet", new PetController(new Pets(em)),
-            "owner", new OwnerController(new Owners(em))
+            "pet", new PetController(new Pets(em), owners),
+            "owner", new OwnerController(owners)
         );
 
         mainLoop(controllers);

@@ -40,6 +40,7 @@ public class Owners {
         entityManager.createQuery("DELETE FROM Owner owner WHERE owner.id = :id")
             .setParameter("id", owner.getId())
             .executeUpdate();
+        System.out.println(owner);
         entityManager.persist(owner);
         entityManager.getTransaction().commit();
     }

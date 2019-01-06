@@ -15,5 +15,13 @@ public abstract class Pet {
     @GeneratedValue
     private Long id;
     private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
+    @Override
+    public String toString() {
+        return "(id=" + id + ",name=" + name + ",owner.id=" + owner.getId() + ")";
+    }
 
 }

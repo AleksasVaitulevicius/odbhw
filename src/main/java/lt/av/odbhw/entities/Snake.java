@@ -16,8 +16,8 @@ public class Snake extends Pet {
     private Boolean isSkinShedding;
 
     @Builder
-    public Snake(Long id, String name, Boolean isSkinShedding) {
-        super(id, name);
+    public Snake(Long id, String name, Boolean isSkinShedding, Owner owner) {
+        super(id, name, owner);
         this.isSkinShedding = isSkinShedding;
     }
 

@@ -1,11 +1,10 @@
 package lt.av.odbhw.controllers;
 
 import lt.av.odbhw.entities.Owner;
-import lt.av.odbhw.entities.Pet;
 import lt.av.odbhw.exceptions.WrongNumberOfParams;
 import lt.av.odbhw.repositories.Owners;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OwnerController extends Controller {
@@ -23,7 +22,7 @@ public class OwnerController extends Controller {
         String name = params.get(0);
         Owner owner = Owner.builder()
             .name(name)
-            .pets(new HashSet<>())
+            .pets(new ArrayList<>())
             .build();
         owners.add(owner);
     }
@@ -51,7 +50,7 @@ public class OwnerController extends Controller {
         Owner owner = Owner.builder()
             .id(id)
             .name(name)
-            .pets(new HashSet<>())
+            .pets(new ArrayList<>())
             .build();
         owners.put(owner);
     }

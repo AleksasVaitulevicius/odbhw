@@ -1,50 +1,56 @@
 package lt.av.odbhw.controllers;
 
 import lt.av.odbhw.entities.Dog;
+import lt.av.odbhw.entities.Owner;
 import lt.av.odbhw.entities.Pet;
 import lt.av.odbhw.entities.Snake;
 import lt.av.odbhw.exceptions.UnkownType;
 import lt.av.odbhw.exceptions.WrongNumberOfParams;
+import lt.av.odbhw.repositories.Owners;
 import lt.av.odbhw.repositories.Pets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PetController extends Controller {
 
     private final Pets pets;
+    private final Owners owners;
 
-    public PetController(Pets pets) {
+    public PetController(Pets pets, Owners owners) {
         this.pets = pets;
+        this.owners = owners;
         commands.put("dogs", params -> dogs());
         commands.put("snakes", params -> snakes());
     }
 
 
     protected void add(List<String> params) {
-        if (params.size() < 3) {
+        if (params.size() < 4) {
             throw new WrongNumberOfParams("add", params.size());
         }
         String type = params.get(0);
         String name = params.get(1);
+        String ownerIdString = params.get(3);
+        Long ownerId = Long.parseLong(ownerIdString);
+        Owner owner = owners.get(ownerId);
         Pet pet;
         switch (type) {
             case "dog":
                 Integer timesFetchedStick = Integer.parseInt(params.get(2));
-                pet = Dog.builder()
-                    .name(name)
-                    .timesFetchedStick(timesFetchedStick)
-                    .build();
+                pet = Dog.builder().name(name).timesFetchedStick(timesFetchedStick).owner(owner).build();
                 break;
             case "snake":
                 Boolean isSkinShedding = !params.get(2).equals("0");
-                pet = Snake.builder()
-                    .name(name)
-                    .isSkinShedding(isSkinShedding)
-                    .build();
+                pet = Snake.builder().name(name).isSkinShedding(isSkinShedding).owner(owner).build();
                 break;
             default:
                 throw new UnkownType(type);
         }
+        if (owner.getPets() == null) {
+            owner.setPets(new ArrayList<>());
+        }
+        owner.getPets().add(pet);
         pets.add(pet);
     }
 
