@@ -47,9 +47,9 @@ get owner
 
 get pet id 1
 
-pet dogs
+get pet dogs
 
-pet snakes
+get pet snakes
 
 put pet 1 Rex 12 5
 
