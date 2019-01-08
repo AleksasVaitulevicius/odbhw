@@ -1,6 +1,7 @@
 package lt.av.odbhw.controllers;
 
 import lt.av.odbhw.entities.Owner;
+import lt.av.odbhw.exceptions.CommandNotFound;
 import lt.av.odbhw.exceptions.WrongNumberOfParams;
 import lt.av.odbhw.repositories.Owners;
 
@@ -32,16 +33,19 @@ public class OwnerController extends Controller {
             owners.get().forEach(System.out::println);
             return;
         }
-        String name = params.get(0);
-        Owner owner;
-        try {
-            Long id = Long.parseLong(name);
-            owner = owners.get(id);
+        switch(params.get(0)) {
+            case "id":
+                System.out.println(owners.get(toLong(params.get(1))));
+                return;
+            case "name":
+                System.out.println(owners.get(params.get(1)));
+                return;
+            case "of_pet":
+                System.out.println(owners.getByPet(toLong(params.get(1))));
+                return;
+            default:
+                throw new CommandNotFound("get " + params.get(0));
         }
-        catch (NumberFormatException ignored) {
-            owner = owners.get(name);
-        }
-        System.out.println(owner);
     }
 
     protected void put(List<String> params) {

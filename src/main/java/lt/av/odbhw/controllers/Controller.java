@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public abstract class Controller {
 
-    Map<String, Consumer<List<String>>> commands;
+    private Map<String, Consumer<List<String>>> commands;
 
     Controller() {
         commands = new HashMap<>();
@@ -34,6 +34,15 @@ public abstract class Controller {
     protected abstract void put(List<String> params);
 
     protected abstract void delete(List<String> params);
+
+    Long toLong(String idString) {
+        try {
+            return Long.parseLong(idString);
+        }
+        catch (NumberFormatException ignored) {
+            throw new CommandNotFound("get id <string>");
+        }
+    }
 
 }
 

@@ -35,6 +35,16 @@ public class Owners {
             .getSingleResult();
     }
 
+    public Owner getByPet(Long id) {
+        return entityManager
+            .createQuery(
+                "SELECT owner FROM Owner owner JOIN owner.pets pet WHERE pet.id = :id",
+                Owner.class
+            )
+            .setParameter("id", id)
+            .getSingleResult();
+    }
+
     public void put(Owner owner) {
         entityManager.getTransaction().begin();
         entityManager.createQuery("DELETE FROM Owner owner WHERE owner.id = :id")

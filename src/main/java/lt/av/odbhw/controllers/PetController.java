@@ -4,6 +4,7 @@ import lt.av.odbhw.entities.Dog;
 import lt.av.odbhw.entities.Owner;
 import lt.av.odbhw.entities.Pet;
 import lt.av.odbhw.entities.Snake;
+import lt.av.odbhw.exceptions.CommandNotFound;
 import lt.av.odbhw.exceptions.UnkownType;
 import lt.av.odbhw.exceptions.WrongNumberOfParams;
 import lt.av.odbhw.repositories.Owners;
@@ -20,8 +21,6 @@ public class PetController extends Controller {
     public PetController(Pets pets, Owners owners) {
         this.pets = pets;
         this.owners = owners;
-        commands.put("dogs", params -> dogs());
-        commands.put("snakes", params -> snakes());
     }
 
 
@@ -59,26 +58,25 @@ public class PetController extends Controller {
             pets.get().forEach(System.out::println);
             return;
         }
-        String name = params.get(0);
-        Pet owner;
-        try {
-            Long id = Long.parseLong(name);
-            owner = pets.get(id);
+        switch(params.get(0)) {
+            case "dogs":
+                System.out.println(pets.dogs());
+                return;
+            case "snakes":
+                System.out.println(pets.snakes());
+                return;
+            case "id":
+                System.out.println(pets.get(toLong(params.get(1))));
+                return;
+            case "name":
+                System.out.println(pets.get(params.get(1)));
+                return;
+            case "of_owner":
+                pets.getByOwner(toLong(params.get(1))).forEach(System.out::println);
+                return;
+            default:
+                throw new CommandNotFound("get " + params.get(0));
         }
-        catch (NumberFormatException ignored) {
-            owner = pets.get(name);
-        }
-        System.out.println(owner);
-    }
-
-    private void dogs() {
-        List<Dog> dogs = pets.dogs();
-        System.out.println(dogs);
-    }
-
-    private void snakes() {
-        List<Snake> snakes = pets.snakes();
-        System.out.println(snakes);
     }
 
     protected void put(List<String> params) {

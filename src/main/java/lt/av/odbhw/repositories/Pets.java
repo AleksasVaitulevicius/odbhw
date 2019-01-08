@@ -37,6 +37,13 @@ public class Pets {
         return entityManager.createQuery("SELECT pet FROM Pet pet", Pet.class).getResultList();
     }
 
+    public List<Pet> getByOwner(Long id) {
+        return entityManager
+            .createQuery("SELECT pet FROM Pet pet WHERE pet.owner.id = :id", Pet.class)
+            .setParameter("id", id)
+            .getResultList();
+    }
+
     public List<Dog> dogs() {
         return entityManager.createQuery("SELECT pet FROM Dog pet", Dog.class).getResultList();
     }
